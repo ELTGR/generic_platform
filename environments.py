@@ -17,7 +17,7 @@ from utils_env import  UtilsMonoAgent
 class MyMonoAgent(gym.Env) : 
 
     def __init__(self,env_config) :
-        print("ini mon env mono")
+        
         self.pygame_init = False
         self.env_config = env_config
         self.largeur_grille = env_config["num_boxes_grid_width"] #Nombre de colonnes de la grille
