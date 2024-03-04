@@ -44,7 +44,7 @@ class UtilsPlatform():
                                 }
         
         
-        algo = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 250000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=checkpoint_freq),storage_path='/home/ia/Desktop/platform/platform/IA_model')
+        algo = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 100000000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=checkpoint_freq),storage_path='/home/ia/Desktop/platform/platform/IA_model')
 
     def test(self,implementation, path) :
             self.env_config['implementation'] = implementation 

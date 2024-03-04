@@ -18,18 +18,24 @@ from cv_bridge import CvBridge
 # msgs type
 from geometry_msgs.msg import TwistStamped, PoseStamped
 from nav_msgs.msg import Odometry
-
+import subprocess
 
 """
 Generates a quintic polynomial trajectory.
 Author: Daniel Ingram (daniel-s-ingram)
 """
 import numpy as np
-
-
+import os
+from time import sleep
+repertoire_cible = os.path.expanduser("~/Documents/ardupilot/ArduSub")
 class BlueRov(Bridge):
 
     def __init__(self, device='udp:192.168.2.1:14550', nbr_bluerov = '',baudrate=115200):
+        print("nbr_bluerov",nbr_bluerov)
+        commande = (f"cd {repertoire_cible} && gnome-terminal --tab -- bash -c 'sim_vehicle.py -v Sub --out=udp:0.0.0.0:1455"+str(nbr_bluerov)+" --instance "+str(nbr_bluerov)+" -S 10'")
+        process_terminal_1 = subprocess.Popen(commande, shell=True)
+        sleep(20)
+        #commande = "sim_vehicle.py  -v Sub --out="+device+"--instance"+str(nbr_bluerov)+"-S 10"
         """ BlueRov ROS Bridge
 
         Args:
