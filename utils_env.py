@@ -46,7 +46,7 @@ class UtilsMonoAgent():
                                         
     def agent_move(self,Env_self, action) : 
 
-        pre_x,pre_y = Env_self.agent.get_pos()
+        pre_x,pre_y= Env_self.agent.get_pos()
 
         new_x,new_y = pre_x,pre_y
 

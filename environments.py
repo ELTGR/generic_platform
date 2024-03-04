@@ -14,7 +14,7 @@ import gymnasium as gym
 
 #from utils_env import  TSP_Utils
 from utils_env import  UtilsMonoAgent
-class MyMonoAgent(gym.Env) : 
+class MonoAgentEnv(gym.Env) : 
 
     def __init__(self,env_config) :
         

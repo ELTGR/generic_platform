@@ -245,7 +245,7 @@ class BlueRov(Bridge):
  
     def get_position(self):
         self.current_attitude = self.get_pymav_pos()
-        return round(self.current_attitude[0]/10),round(self.current_attitude[1]/10),round(self.current_attitude[2]/10)
+        return round(self.current_attitude[0]/10),round(self.current_attitude[1]/10) #,round(self.current_attitude[2]/10)
 
     def set_pos(self,new_position):
 

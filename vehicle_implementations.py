@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random
 
-#from bluerov2_bridge.bluerov_node import BlueRov
+from bluerov2_bridge.bluerov_node import BlueRov
 
 class MobileCommonInterface:
     
