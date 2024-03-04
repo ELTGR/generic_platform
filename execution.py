@@ -18,7 +18,7 @@ from ray.air import CheckpointConfig
 
 if __name__ == "__main__":
     type = 'mono'
-    do = 'simple'
+    do = 'train'
     
     
     if type =="multi" : 
@@ -378,8 +378,6 @@ if __name__ == "__main__":
                 my_env.render()
         
 
- 
-
     elif type=="mono" : 
 
         if do == 'train' : 
@@ -403,7 +401,7 @@ if __name__ == "__main__":
                                     "num_boxes_grid_height":taille_map_y,
                                     "n_orders" : 3,
                                     "step_limit": 100,
-                                    "same_seed" : True,
+                                    "same_seed" : False,
                                     
                                     },
 
@@ -415,8 +413,14 @@ if __name__ == "__main__":
 
                                     "num_cpus_per_worker": 5,
 
-                                    }
-                    analysis = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 250000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True))
+                                    "model":{
+                                             "fcnet_hiddens": [64, 64],  # Architecture du réseau de neurones (couches cachées)
+                                            },
+                                    "optimizer": {
+                                           "learning_rate": 0.001,  # Taux d'apprentissage
+                                         }
+                                }
+                    analysis = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 250000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=10),storage_path='/home/ia/Desktop/platform/platform/IA_model')
 
         if do == 'simple' : 
             

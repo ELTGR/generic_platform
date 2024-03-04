@@ -13,43 +13,36 @@ class UtilsMonoAgent():
 
             self.x_goals = [0]
             self.y_goals = [0]
-            self.goals_cord = []
+            self.goals_cord = [[0,0]]
 
             n_goals=0
 
-            while True : 
-                
+            while True :
+
                 for x_s in range(Env_self.largeur_grille):
                     for y_s in range(Env_self.hauteur_grille):
 
-                        for i in range(len(self.x_goals)) :
+                        if [x_s,y_s] in  self.goals_cord :
+                            pass
 
+                        else : 
+                            goals = np.random.choice([0,1],p=[1-Env_self.goals_prob,Env_self.goals_prob])
 
-                            print(x_s ,'== ',self.x_goals[i],"and",self.x_goals[i],'==',self.y_goals[i])
-
-                            if x_s == self.x_goals[i] and y_s == self.y_goals[i]:
-                                print("pass")
-
-                            else : 
-                                print("add")
-
-                                goals = np.random.choice([0,1],p=[1-Env_self.goals_prob,Env_self.goals_prob])
-                                if goals == 1:
+                            if goals == 1:  
+                                self.x_goals.append(x_s)
+                                self.y_goals.append(y_s)
+                                self.goals_cord.append([x_s,y_s])
+                                n_goals +=1
+                                
+                                if n_goals==Env_self.n_orders :
+                                    self.goals = {'x': self.x_goals[1:],'y' :self.y_goals[1:]}    
                                     
-                                    self.x_goals.append(x_s)
-                                    self.y_goals.append(y_s)
-                                    self.goals_cord.append([x_s,y_s])
-
-                                    n_goals +=1
-                                    
-                                    if n_goals==Env_self.n_orders :
-                                        self.goals = {'x': self.x_goals[1:],'y' :self.y_goals[1:]}    
-                                        return self.goals_cord,self.goals
+                                    return self.goals, self.goals_cord[1:]
                                     
         else : 
             self.goals = {'x': [0,1,2],'y' :[2,0,1]}    
             self.goals_cord = [[0,2],[1,0],[2,1]]
-            return self.goals,self.goals_cord
+            return self.goals, self.goals_cord
                                         
     def agent_move(self,Env_self, action) : 
 
