@@ -57,10 +57,7 @@ class MyMonoAgent(gym.Env) :
             
             self.goals_to_check = self.goals_cord
             self.goal_checked = []
-            print("self.goals_cord : ", self.goals_cord)
-            print("self.goals_to_check : ", self.goals_to_check)
-            print("goal_checked : ",self.goal_checked)
-            print("self.goals : ", self.goals)
+            
             
 
             
