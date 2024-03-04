@@ -18,7 +18,7 @@ from ray.air import CheckpointConfig
 
 if __name__ == "__main__":
     type = 'mono'
-    do = 'train'
+    do = 'simple'
     
     
     if type =="multi" : 
@@ -385,8 +385,8 @@ if __name__ == "__main__":
                     print("train")  
                     ray.init()
 
-                    taille_map_x = 3
-                    taille_map_y = 3
+                    taille_map_x = 5
+                    taille_map_y = 5
                     subzones_size = 3 
                     nbr_sup = 1
                     nbr_op = 1
@@ -399,8 +399,8 @@ if __name__ == "__main__":
                                     "subzones_width":subzones_size,
                                     "num_boxes_grid_width":taille_map_x,
                                     "num_boxes_grid_height":taille_map_y,
-                                    "n_orders" : 3,
-                                    "step_limit": 100,
+                                    "n_orders" : 4,
+                                    "step_limit": 1000,
                                     "same_seed" : False,
                                     
                                     },
@@ -411,7 +411,7 @@ if __name__ == "__main__":
                                     "num_gpus": 0,
                                     #"num_gpus_per_worker": 2,
 
-                                    "num_cpus_per_worker": 5,
+                                    "num_cpus_per_worker": 20,
 
                                     "model":{
                                              "fcnet_hiddens": [64, 64],  # Architecture du réseau de neurones (couches cachées)
@@ -420,18 +420,18 @@ if __name__ == "__main__":
                                            "learning_rate": 0.001,  # Taux d'apprentissage
                                          }
                                 }
-                    analysis = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 250000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=10),storage_path='/home/ia/Desktop/platform/platform/IA_model')
+                    analysis = tune.run('PPO',name="PPO", config=tune_config,stop={"timesteps_total": 10000000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=50),storage_path='/home/eliott/Desktop/platform/IA_model')
 
         if do == 'simple' : 
             
 
-            algo = Algorithm.from_checkpoint("/home/ia/ray_results/PPO/PPO_MyMonoAgent_6956d_00000_0_2024-02-29_14-14-04/checkpoint_000063")
+            algo = Algorithm.from_checkpoint("/home/eliott/Desktop/platform/IA_model/PPO/PPO_MyMonoAgent_04583_00000_0_2024-03-04_08-58-41/checkpoint_000550")
             #po=algo.get_policy()
             #algo.export_policy_model("/home/ia/Desktop")
             #algo.evaluate()
             
-            taille_map_x = 3
-            taille_map_y = 3
+            taille_map_x = 5
+            taille_map_y = 5
             subzones_size = 3 
             nbr_sup = 1
             nbr_op = 1
@@ -440,8 +440,8 @@ if __name__ == "__main__":
                                     "subzones_width":subzones_size,
                                     "num_boxes_grid_width":taille_map_x,
                                     "num_boxes_grid_height":taille_map_y,
-                                    "n_orders" : 3,
-                                    "step_limit": 100,
+                                    "n_orders" : 4,
+                                    "step_limit": 1000,
                                     "same_seed" : False
                         }
             
