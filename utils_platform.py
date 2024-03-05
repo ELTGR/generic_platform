@@ -35,6 +35,12 @@ class UtilsPlatform():
                                     "num_cpus_per_worker": train_config["num_cpus_per_worker"],
                                     "model":train_config["model"],
                                     "optimizer": train_config["optimizer"],
+                                    
+                                    
+                                    # other configurations...
+                                    "local_dir": "environments/UUV_Mono_Agent/Ia_models",
+
+
                                 }
         
         
@@ -47,8 +53,8 @@ class UtilsPlatform():
                                "timesteps_total": train_config["stop_step"]
                                }, 
 
-                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"]),
-                        storage_path=train_config["path"]
+                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"])
+                        # storage_path=train_config["path"]
                         )
                                                             
     def train_from_checkpoint(self,train_config,path):
