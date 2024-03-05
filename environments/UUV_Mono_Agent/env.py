@@ -127,7 +127,7 @@ class UUVMonoAgentEnv(gym.Env) :
                 
 
     
-                self.subzones_width = self.env_config["subzones_width"]
+                self.subzones_width =  self.env_config["num_boxes_grid_width"]
                 centre = self.subzones_width // 2  
                 self.plage_coords = [i - centre for i in range(self.subzones_width)] # plage de coordonnées utile pour dessiner les sous-zones
                 
@@ -142,7 +142,7 @@ class UUVMonoAgentEnv(gym.Env) :
                 self.taille_case_y = self.hauteur_fenetre // self.hauteur_grille
                 # Initialisation de la liste de coordonnées des centres des sous-zones jaunes et vertes
                 self.centres_sous_zones = []
-                pas = self.env_config["subzones_width"]
+                pas =  self.env_config["num_boxes_grid_width"]
                 # Boucles pour générer les coordonnées
                 for x in range(1, self.largeur_grille, pas):
                     for y in range(1, self.hauteur_grille, pas):

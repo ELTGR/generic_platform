@@ -51,11 +51,37 @@ class UtilsPlatform():
                         storage_path=train_config["path"]
                         )
                                                             
-    def train_from_checkpoint(self,path):
+    def train_from_checkpoint(self,train_config,path):
+            
+        self.env_config['implementation'] = "simple"
+        ray.init()
 
-        algo = Algorithm.from_checkpoint(path)
+        tune_config={
+                        "env": self.env_type,
+                        "env_config":self.env_config,
+                        "num_workers": train_config["num_workers"],
+                        #"num_learner_workers" : train_config["num_learner_workers"],
+                        "num_gpus": train_config["num_gpus"],
+                        #"num_gpus_per_worker": train_config["num_gpus_per_worker"],
+                        "num_cpus_per_worker": train_config["num_cpus_per_worker"],
+                        "model":train_config["model"],
+                        "optimizer": train_config["optimizer"],
+                    }
+        
+        
+        algo = tune.run(
+                        "PPO", 
+                        name=train_config["name"],
+                        config = tune_config, 
+                        
+                        stop = {
+                            "timesteps_total": train_config["stop_step"]
+                            }, 
 
-        algo.tun
+                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"]),
+                        storage_path=train_config["path"],
+                        restore= path
+                        )
 
     def test(self,implementation, path) :
             
