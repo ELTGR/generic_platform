@@ -6,8 +6,8 @@ from environments.My_Custom_Env.views2d import MyCustomEnv2dView
 from environments.My_Custom_Env.bridge import Agent
 from environments.My_Custom_Env.utils import  UtilsMyCustomEnv
 '''
-In this file you must write the 4 fonction : init, reset, step and render.
-Other fonction my be write in the corresponding Utils  to your env, where UtilsMyCustomEnv
+In this file, you must write the 4 functions: init, reset, step and render.
+Other functions may be written in the corresponding Utils  to your envy, where UtilsMyCustomEnv
 '''
 class MyCustomEnv(gym.Env) : 
 

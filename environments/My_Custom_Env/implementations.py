@@ -9,14 +9,12 @@ class MobileCommonInterface:
 
     def get_position(self):
         pass
-
-
 '''
-thoses 2 class are child of the MobileCommonInterface class 
-In your env you will call some fonction who must be wrote where.
-Thoses fonction must be in the 2 class but can be diffenrente inside. 
+Theses 2 class are children of the MobileCommonInterface class 
+In your env, you will call some functions who must be wrote where.
+Thuses functions must be in the 2 class but can be different inside. 
 
-for exemple in simple and real we have move_to, in simple move is just remplace previous x and y.
+For example, in simple and real we have move_to, in simple, move just replaces previous x and y.
 In real move_to is calling the real robot to move using the robot.move
 '''
 
