@@ -12,6 +12,7 @@ from time import sleep
 from gymnasium import spaces
 from ray import tune    
 from ray.air import CheckpointConfig
+import torch 
 import tensorflow as tf
 
 class UtilsPlatform():
@@ -42,7 +43,17 @@ class UtilsPlatform():
                         checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"] ),
                         storage_path=train_config["path"]
                         )
-                                                            
+                
+        # Retrieve the best trial
+        best_trial = algo.get_best_trial("episode_reward_mean", mode="max")
+
+        # Get the trained model from the best trial
+        trained_model = best_trial.get_model()
+
+        # Save the trained model (assuming it's a PyTorch model)
+        torch.save(trained_model.state_dict(), "path/to/save/trained_model.pth")
+
+                                                                    
     def train_from_checkpoint(self,train_config,path):
             
         self.env_config['implementation'] = "simple"
@@ -65,7 +76,7 @@ class UtilsPlatform():
                         checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"] ),
                         storage_path=train_config["path"],restore=path
                         )
-
+        
     
     def test(self,implementation, path) :
             
