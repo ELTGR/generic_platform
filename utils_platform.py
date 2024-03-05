@@ -10,9 +10,9 @@ from ray.rllib.algorithms.ppo import (
 #test branche opti
 from time import sleep
 from gymnasium import spaces
-from ray import tune
+from ray import tune    
 from ray.air import CheckpointConfig
-
+import tensorflow as tf
 
 class UtilsPlatform():
 
@@ -66,20 +66,21 @@ class UtilsPlatform():
                         storage_path=train_config["path"],restore=path
                         )
 
+    
     def test(self,implementation, path) :
             
             self.env_config['implementation'] = implementation 
             print("config : ",self.env_config)
 
             env = self.env_type(env_config = self.env_config)
-            algo = Algorithm.from_checkpoint(path)
+            loaded_model = tf.keras.models.load_model(path)
             agent_obs = env.reset()
             print("obs",agent_obs)
             env.render()
 
             while True : 
 
-                action =  algo.compute_single_action( observation=agent_obs)
+                action =  action = loaded_model.predict(agent_obs)
                 print(action)
                 agent_obs, reward, done, info = env.step(action)
                 print("obs",agent_obs)

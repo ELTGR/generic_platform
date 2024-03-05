@@ -34,5 +34,6 @@ train_config = {
 
 my_platform = UtilsPlatform(env_config=env_config,env = UUVMonoAgentEnv)
 #my_platform.train(train_config=train_config) 
-#my_platform.test(implementation="simple",path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
-my_platform.train_from_checkpoint(train_config=train_config,path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
+
+my_platform.test(implementation="simple",path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
+#my_platform.train_from_checkpoint(train_config=train_config,path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
