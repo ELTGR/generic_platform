@@ -21,30 +21,41 @@ class UtilsPlatform():
         self.env_config = env_config
         self.env_type= env
         
-    def train(self,checkpoint_freq = 10 ) : 
+    def train(self,train_config) : 
         self.env_config['implementation'] = "simple"
         ray.init()
 
         tune_config={
                                     "env": self.env_type,
                                     "env_config":self.env_config,
-                                    "num_workers": 1,
-
-                                    #"num_learner_workers" : 0,
-                                    "num_gpus": 0,
-                                    #"num_gpus_per_worker": 2,
-
-                                    "num_cpus_per_worker": 5,
-
-                                    "model":{
-                                             "fcnet_hiddens": [64, 64],  # Architecture du réseau de neurones (couches cachées)
-                                            },
-                                    "optimizer": {
-                                           "learning_rate": 0.001,  # Taux d'apprentissage
-                                         }
+                                    "num_workers": train_config["num_workers"],
+                                    #"num_learner_workers" : train_config["num_learner_workers"],
+                                    "num_gpus": train_config["num_gpus"],
+                                    #"num_gpus_per_worker": train_config["num_gpus_per_worker"],
+                                    "num_cpus_per_worker": train_config["num_cpus_per_worker"],
+                                    "model":train_config["model"],
+                                    "optimizer": train_config["optimizer"],
                                 }
         
-        algo = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 100000000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=checkpoint_freq),storage_path='/home/ia/Desktop/platform/platform/IA_model')
+        
+        algo = tune.run(
+                        "PPO", 
+                        name=train_config["name"],
+                        config = tune_config, 
+                        
+                        stop = {
+                               "timesteps_total": train_config["stop_step"]
+                               }, 
+
+                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"]),
+                        storage_path=train_config["path"]
+                        )
+                                                            
+    def train_from_checkpoint(self,path):
+
+        algo = Algorithm.from_checkpoint(path)
+
+        algo.tun
 
     def test(self,implementation, path) :
             
