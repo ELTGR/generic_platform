@@ -1,8 +1,6 @@
 
 from environments.My_Custom_Env.implementations import SimpleImplementation, RealImplementation
-
-#The bridge is where to create an instance of the implemenation choose une the env_config
-
+#The bridge is where to create an instance of the implementation choose in the env_config
 class Agent:
 
     def __init__(self, implementation="simple"):
