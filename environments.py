@@ -14,6 +14,7 @@ import gymnasium as gym
 
 #from utils_env import  TSP_Utils
 from utils_env import  UtilsMonoAgent
+
 class MonoAgentEnv(gym.Env) : 
 
     def __init__(self,env_config) :
@@ -133,8 +134,8 @@ class MonoAgentEnv(gym.Env) :
                 self.num_subzones_grid_width = self.env_config["num_boxes_grid_width"] // self.subzones_width
                 self.num_subzones_grid_height = self.env_config["num_boxes_grid_height"] // self.subzones_width 
                  
-                self.largeur_fenetre = self.env_config["num_boxes_grid_width"] * 40
-                self.hauteur_fenetre = self.env_config["num_boxes_grid_height"] * 40
+                self.largeur_fenetre = self.env_config["num_boxes_grid_width"] * 100
+                self.hauteur_fenetre = self.env_config["num_boxes_grid_height"] * 100
             
                 # Taille de la case
                 self.taille_case_x = self.largeur_fenetre // self.largeur_grille
@@ -204,9 +205,6 @@ class MonoAgentEnv(gym.Env) :
 
             # Limite la fréquence de rafraîchissement
             clock.tick(1)
-
-
-
 
 
 

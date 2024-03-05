@@ -196,16 +196,29 @@ class Bridge(object):
             self.conn.arducopter_arm()
 
         self.conn.set_mode('GUIDED')
-        mask = 0b10011111000
+        # Set mask
+        # mask = 0b0000000111111111
+
+        #---------------------
+        ##mask = 0b10011111000
+        #---------------------
+        mask =   0b100111110000
+                  #xyzxyzxyzyyr
+        # for i, value in enumerate(param):
+        #     if value is not None:
+        #         mask -= 1<<i
+        #     else:
+        #         param[i] = 0.0
+
 
         #http://mavlink.org/messages/common#SET_POSITION_TARGET_GLOBAL_INT
         self.conn.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.conn.target_system, self.conn.target_component,
                            mavutil.mavlink.MAV_FRAME_LOCAL_NED, int(mask),
-                            param[0], param[1], param[2],                   # position x,y,z
-                            param[3], param[4], param[5],                   # velocity x,y,z
-                            param[6], param[7], param[8],                   # accel x,y,z
-                            param[9], param[10]))                           # yaw, yaw rate
-        
+                            param[0], param[1], param[2],                   
+                            param[3], param[4], param[5],                  
+                            param[6], param[7], param[8],                  
+                            param[9], param[10]))                           
+
     def set_attitude_target(self, param=[]):
         """ Create a SET_ATTITUDE_TARGET message
             http://mavlink.org/messages/common#SET_ATTITUDE_TARGET
@@ -380,7 +393,7 @@ class Bridge(object):
             if self.mission_point_sent == False:
                 time.sleep(0.05)
                 self.ok_pose = False
-                initial_position = [goal[0], goal[1], -z_mission, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -2.88, 0.0]
+                initial_position = [goal[0], goal[1], z_mission, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -2.88, 0.0]
                 self.set_position_target_local_ned(initial_position)
                 time.sleep(0.05)
                 self.mission_point_sent = True

@@ -2,6 +2,7 @@
 from vehicle_implementations import UXVSimpleSimImplementation, Bluerov2RealImplementation
 
 class UXV:
+
     def __init__(self, implementation="simple",ip_port=0):
         """
             implementation : choose if you use Bluerov2 or not ("bluerov2" or "simple")
@@ -21,5 +22,6 @@ class UXV:
     def set_pos(self,new_pose):
         #print("UXV set_pos : " , new_pose[0],new_pose[1])
         return self.implementation.set_pos(new_pose)
+   
     def get_info(self) : 
         return self.implementation.get_info()

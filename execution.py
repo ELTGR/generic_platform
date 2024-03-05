@@ -21,6 +21,9 @@ env_config={
 
 
 my_platfrom = UtilsPlatform(env_config=env_config,env = MonoAgentEnv)
+
+
 #my_platfrom.train(checkpoint_freq=5)
 
-my_platfrom.test(implementation = "real", path="IA_model/PPO/PPO_MonoAgentEnv_4c8bb_00000_0_2024-03-04_10-26-36/checkpoint_000005")
+
+my_platfrom.test(implementation = "simple", path="IA_model/PPO/PPO_MonoAgentEnv_0482c_00000_0_2024-03-04_14-20-49/checkpoint_000010")

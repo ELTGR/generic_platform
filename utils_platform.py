@@ -24,6 +24,7 @@ class UtilsPlatform():
     def train(self,checkpoint_freq = 10 ) : 
         self.env_config['implementation'] = "simple"
         ray.init()
+
         tune_config={
                                     "env": self.env_type,
                                     "env_config":self.env_config,
@@ -43,10 +44,10 @@ class UtilsPlatform():
                                          }
                                 }
         
-        
         algo = tune.run("PPO", name="PPO", config=tune_config,stop={"timesteps_total": 100000000}, checkpoint_config=CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=checkpoint_freq),storage_path='/home/ia/Desktop/platform/platform/IA_model')
 
     def test(self,implementation, path) :
+            
             self.env_config['implementation'] = implementation 
             print("config : ",self.env_config)
 
@@ -56,7 +57,6 @@ class UtilsPlatform():
             print("obs",agent_obs)
             env.render()
 
-
             while True : 
 
                 action =  algo.compute_single_action( observation=agent_obs)
@@ -65,8 +65,6 @@ class UtilsPlatform():
                 print("obs",agent_obs)
                 print("obs",reward)
             
-
-
                 env.render()
                 if done :
                     env = self.env_type(env_config=self.env_config)
