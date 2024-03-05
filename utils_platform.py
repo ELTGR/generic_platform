@@ -35,26 +35,12 @@ class UtilsPlatform():
                                     "num_cpus_per_worker": train_config["num_cpus_per_worker"],
                                     "model":train_config["model"],
                                     "optimizer": train_config["optimizer"],
-                                    
-                                    
-                                    # other configurations...
-                                    "local_dir": "environments/UUV_Mono_Agent/Ia_models",
-
-
                                 }
         
         
-        algo = tune.run(
-                        "PPO", 
-                        name=train_config["name"],
-                        config = tune_config, 
-                        
-                        stop = {
-                               "timesteps_total": train_config["stop_step"]
-                               }, 
-
-                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"])
-                        # storage_path=train_config["path"]
+        algo = tune.run("PPO",name=train_config["name"],config = tune_config,stop = {"timesteps_total": train_config["stop_step"]}, 
+                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"] ),
+                        storage_path=train_config["path"]
                         )
                                                             
     def train_from_checkpoint(self,train_config,path):
@@ -63,30 +49,21 @@ class UtilsPlatform():
         ray.init()
 
         tune_config={
-                        "env": self.env_type,
-                        "env_config":self.env_config,
-                        "num_workers": train_config["num_workers"],
-                        #"num_learner_workers" : train_config["num_learner_workers"],
-                        "num_gpus": train_config["num_gpus"],
-                        #"num_gpus_per_worker": train_config["num_gpus_per_worker"],
-                        "num_cpus_per_worker": train_config["num_cpus_per_worker"],
-                        "model":train_config["model"],
-                        "optimizer": train_config["optimizer"],
-                    }
+                                    "env": self.env_type,
+                                    "env_config":self.env_config,
+                                    "num_workers": train_config["num_workers"],
+                                    #"num_learner_workers" : train_config["num_learner_workers"],
+                                    "num_gpus": train_config["num_gpus"],
+                                    #"num_gpus_per_worker": train_config["num_gpus_per_worker"],
+                                    "num_cpus_per_worker": train_config["num_cpus_per_worker"],
+                                    "model":train_config["model"],
+                                    "optimizer": train_config["optimizer"],
+                                }
         
         
-        algo = tune.run(
-                        "PPO", 
-                        name=train_config["name"],
-                        config = tune_config, 
-                        
-                        stop = {
-                            "timesteps_total": train_config["stop_step"]
-                            }, 
-
-                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"]),
-                        storage_path=train_config["path"],
-                        restore= path
+        algo = tune.run("PPO",name=train_config["name"],config = tune_config,stop = {"timesteps_total": train_config["stop_step"]}, 
+                        checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"] ),
+                        storage_path=train_config["path"],restore=path
                         )
 
     def test(self,implementation, path) :

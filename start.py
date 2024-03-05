@@ -20,19 +20,19 @@ env_config={
 
 train_config = {
                 "name" : str(taille_map_x)+"x"+str(taille_map_y)+"_"+str(n_orders)+"_"+str(step_limit),
-                #"path" : "environments/UUV_Mono_Agent/Ia_models",
-                "checkpoint_freqency" : 50,
+                "path" : "/home/eliott/Desktop/generic_platform/environments/UUV_Mono_Agent/Ia_models",
+                "checkpoint_freqency" : 10,
                 "stop_step" : 100000000000000000000000000000000000000000000000000000000000000000000,
                 "num_workers": 1,
                 "num_learner_workers" : 0,
                 "num_gpus": 0,
                 "num_gpus_per_worker": 0,#
-                "num_cpus_per_worker": 5,
+                "num_cpus_per_worker": 20,
                 "model":{"fcnet_hiddens": [64, 64],},  # Architecture du réseau de neurones (couches cachées) 
                 "optimizer": {"learning_rate": 0.001,} # Taux d'apprentissage
 }
 
 my_platform = UtilsPlatform(env_config=env_config,env = UUVMonoAgentEnv)
-my_platform.train(train_config=train_config) 
-#my_platform.test(implementation="simple",path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_1a24b_00000_0_2024-03-05_13-58-46/checkpoint_000150")
-#my_platform.train_from_checkpoint(train_config=train_config,path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_1a24b_00000_0_2024-03-05_13-58-46/checkpoint_000150")
+#my_platform.train(train_config=train_config) 
+#my_platform.test(implementation="simple",path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
+my_platform.train_from_checkpoint(train_config=train_config,path="environments/UUV_Mono_Agent/Ia_models/3x3_3_100/PPO_UUVMonoAgentEnv_49608_00000_0_2024-03-05_15-11-40/checkpoint_000009")
