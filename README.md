@@ -5,7 +5,7 @@
 - First you will find one folder "Scenarios" and 2 files "start.py" and utils_platfrom.py
 ![Screenshot from 2024-03-07 11-51-39](https://github.com/ELTGR/generic_platform/assets/122261448/4be9f11b-0222-47c6-b61e-dcef707652e0)
 
-### Lauchn
+### Launch
 
 - Experiments.py is the file where you can find all the train, test function.
   
