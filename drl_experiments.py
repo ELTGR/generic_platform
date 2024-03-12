@@ -12,8 +12,8 @@ from time import sleep
 from gymnasium import spaces
 from ray import tune    
 from ray.air import CheckpointConfig
-
-
+import subprocess
+import time
 
 class DrlExperiments():
 
@@ -23,6 +23,16 @@ class DrlExperiments():
         self.env_type= env
         
     def tune_train(self,train_config) : 
+
+
+
+        # Lancez TensorBoard en utilisant subprocess
+           
+        # Lancez TensorBoard en utilisant un nouveau terminal (Linux/Mac)
+        tensorboard_command = f"x-terminal-emulator -e tensorboard --logdir="+str(train_config["path"])
+        
+        process_terminal_1 = subprocess.Popen(tensorboard_command, shell=True)
+        time.sleep(2)
         self.env_config['implementation'] = "simple"
         
         tune_config={
@@ -46,7 +56,11 @@ class DrlExperiments():
       
                                                                   
     def tune_train_from_checkpoint(self,train_config,path):
-            
+         
+
+
+        
+
         self.env_config['implementation'] = "simple"
         ray.init()
 
@@ -246,34 +260,12 @@ class DrlExperiments():
 if __name__ == '__main__':
 
 
-    from Scenarios.Multi_Agents_Supervisor_Operators.env import MultiAgentEnv
-
-    taille_map_x = 3
-    taille_map_y = 3
-    n_orders = 3
-    step_limit = 100
-    env_config={
-                "implementation":"simple",
-                
-                "num_boxes_grid_width":taille_map_x,
-                "num_boxes_grid_height":taille_map_y,
-                "n_orders" : n_orders,
-                "step_limit": step_limit,
-                "same_seed" : False
-                }
-    my_platform = DrlExperiments(env = MultiAgentEnv, env_config=env_config )
-    my_platform.ppo_train() 
-
-#Train mono agent 
-    # from Scenarios.UUV_Mono_Agent_TSP.env import UUVMonoAgentTSPEnv
-
+    # from Scenarios.Multi_Agents_Supervisor_Operators.env import MultiAgentEnv
 
     # taille_map_x = 3
     # taille_map_y = 3
     # n_orders = 3
     # step_limit = 100
-
-
     # env_config={
     #             "implementation":"simple",
                 
@@ -283,24 +275,46 @@ if __name__ == '__main__':
     #             "step_limit": step_limit,
     #             "same_seed" : False
     #             }
+    # my_platform = DrlExperiments(env = MultiAgentEnv, env_config=env_config )
+    # my_platform.ppo_train() 
 
-    # train_config = {
-    #                 "name" : str(taille_map_x)+"x"+str(taille_map_y)+"_"+str(n_orders)+"_"+str(step_limit),
-    #                 "path" : "/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models",
-    #                 "checkpoint_freqency" : 10,
-    #                 "stop_step" : 1000,
-    #                 "num_workers": 1,
-    #                 "num_learner_workers" : 0,
-    #                 "num_gpus": 0,
-    #                 "num_gpus_per_worker": 0,#
-    #                 "num_cpus_per_worker": 5,
-    #                 "model":{"fcnet_hiddens": [64, 64],},  # Architecture du réseau de neurones (couches cachées) 
-    #                 "optimizer": {"learning_rate": 0.001,} # Taux d'apprentissage
-    # }
+#Train mono agent 
+    from Scenarios.UUV_Mono_Agent_TSP.env import UUVMonoAgentTSPEnv
 
-    # my_platform = DrlExperiments(env_config=env_config,env = UUVMonoAgentTSPEnv)
-    # #my_platform.train(train_config=train_config) 
 
-    # #my_platform.test(implementation="simple",path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
-    # my_platform.train_from_checkpoint(train_config=train_config,path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
+    taille_map_x = 3
+    taille_map_y = 3
+    n_orders = 3
+    step_limit = 100000
+
+
+    env_config={
+                "implementation":"simple",
+                
+                "num_boxes_grid_width":taille_map_x,
+                "num_boxes_grid_height":taille_map_y,
+                "n_orders" : n_orders,
+                "step_limit": step_limit,
+                "same_seed" : False
+                }
+
+    train_config = {
+                    "name" : str(taille_map_x)+"x"+str(taille_map_y)+"_"+str(n_orders)+"_"+str(step_limit),
+                    "path" : "/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models",
+                    "checkpoint_freqency" : 5,
+                    "stop_step" : step_limit,
+                    "num_workers": 1,
+                    "num_learner_workers" : 0,
+                    "num_gpus": 0,
+                    "num_gpus_per_worker": 0,#
+                    "num_cpus_per_worker": 5,
+                    "model":{"fcnet_hiddens": [64, 64],},  # Architecture du réseau de neurones (couches cachées) 
+                    "optimizer": {"learning_rate": 0.001,} # Taux d'apprentissage
+    }
+
+    my_platform = DrlExperiments(env_config=env_config,env = UUVMonoAgentTSPEnv)
+    my_platform.tune_train(train_config=train_config) 
+
+    #my_platform.test(implementation="simple",path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
+    #my_platform.train_from_checkpoint(train_config=train_config,path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
     
