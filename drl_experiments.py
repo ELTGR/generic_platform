@@ -1,6 +1,7 @@
 import ray
 from ray.tune.logger import pretty_print
 from ray.rllib.algorithms.algorithm import Algorithm
+
 from ray.rllib.algorithms.ppo import (
     PPOConfig,
     PPOTF1Policy,
@@ -15,7 +16,7 @@ from ray.air import CheckpointConfig
 import subprocess
 import time
 
-class DrlExperiments():
+class DrlExperimentsTune():
 
     def __init__(self,env,env_config,) :
 
@@ -24,11 +25,7 @@ class DrlExperiments():
         
     def tune_train(self,train_config) : 
 
-
-
         # Lancez TensorBoard en utilisant subprocess
-           
-        # Lancez TensorBoard en utilisant un nouveau terminal (Linux/Mac)
         tensorboard_command = f"x-terminal-emulator -e tensorboard --logdir="+str(train_config["path"])
         
         process_terminal_1 = subprocess.Popen(tensorboard_command, shell=True)
@@ -52,15 +49,10 @@ class DrlExperiments():
                         checkpoint_config = CheckpointConfig(checkpoint_at_end=True,checkpoint_frequency=train_config["checkpoint_freqency"] ),
                         storage_path=train_config["path"]
                         )
-                
-      
-                                                                  
+     
+                                                      
     def tune_train_from_checkpoint(self,train_config,path):
          
-
-
-        
-
         self.env_config['implementation'] = "simple"
         ray.init()
 
@@ -82,7 +74,37 @@ class DrlExperiments():
                         storage_path=train_config["path"],restore=path
                         )
         
-    
+    def test(self,implementation, path) :
+            
+            self.env_config['implementation'] = implementation 
+            print("config : ",self.env_config)
+
+            env = self.env_type(env_config = self.env_config)
+            loaded_model = Algorithm.from_checkpoint(path)
+            
+            loaded_model.export_policy_model(export_dir="/home/ia/Desktop/DRL_platform/DRL_platform_ENSTA_v1/Scenarios/UUV_Mono_Agent_TSP/models")
+
+            agent_obs = env.reset()
+            print("agent_obs : ",agent_obs)
+            env.render()
+
+            while True : 
+
+                action =  loaded_model.compute_single_action(agent_obs)
+                print(action)
+                agent_obs, reward, done, info = env.step(action)
+                print("agent_obs : ",agent_obs)
+                print("agent_reward : ",reward)
+            
+                env.render()
+                if done :
+                    env = self.env_type(env_config=self.env_config)
+                    agent_obs = env.reset()
+                    print("agent_obs : ",agent_obs)
+                    env.render()
+     
+class DrlExperimentsPPO():   
+
     def test(self,implementation, path) :
             
             self.env_config['implementation'] = implementation 
@@ -259,33 +281,13 @@ class DrlExperiments():
 
 if __name__ == '__main__':
 
-
-    # from Scenarios.Multi_Agents_Supervisor_Operators.env import MultiAgentEnv
-
-    # taille_map_x = 3
-    # taille_map_y = 3
-    # n_orders = 3
-    # step_limit = 100
-    # env_config={
-    #             "implementation":"simple",
-                
-    #             "num_boxes_grid_width":taille_map_x,
-    #             "num_boxes_grid_height":taille_map_y,
-    #             "n_orders" : n_orders,
-    #             "step_limit": step_limit,
-    #             "same_seed" : False
-    #             }
-    # my_platform = DrlExperiments(env = MultiAgentEnv, env_config=env_config )
-    # my_platform.ppo_train() 
-
-#Train mono agent 
     from Scenarios.UUV_Mono_Agent_TSP.env import UUVMonoAgentTSPEnv
 
 
     taille_map_x = 3
     taille_map_y = 3
     n_orders = 3
-    step_limit = 100000
+    step_limit = 100
 
 
     env_config={
@@ -300,9 +302,9 @@ if __name__ == '__main__':
 
     train_config = {
                     "name" : str(taille_map_x)+"x"+str(taille_map_y)+"_"+str(n_orders)+"_"+str(step_limit),
-                    "path" : "/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models",
+                    "path" : "/home/ia/Desktop/DRL_platform/DRL_platform_ENSTA_v1/Scenarios/UUV_Mono_Agent_TSP/models",
                     "checkpoint_freqency" : 5,
-                    "stop_step" : step_limit,
+                    "stop_step" : 10000000000000000000,
                     "num_workers": 1,
                     "num_learner_workers" : 0,
                     "num_gpus": 0,
@@ -312,9 +314,9 @@ if __name__ == '__main__':
                     "optimizer": {"learning_rate": 0.001,} # Taux d'apprentissage
     }
 
-    my_platform = DrlExperiments(env_config=env_config,env = UUVMonoAgentTSPEnv)
-    my_platform.tune_train(train_config=train_config) 
+    my_platform = DrlExperimentsTune(env_config=env_config,env = UUVMonoAgentTSPEnv)
+    #my_platform.tune_train(train_config=train_config) 
 
-    #my_platform.test(implementation="simple",path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
+    #my_platform.test(implementation="simple",path="/home/ia/Desktop/DRL_platform/DRL_platform_ENSTA_v1/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_f7ede_00000_0_2024-03-12_15-29-43/checkpoint_000001")
     #my_platform.train_from_checkpoint(train_config=train_config,path="/home/ia/Desktop/generic_platform/Scenarios/UUV_Mono_Agent_TSP/models/3x3_3_100/PPO_UUVMonoAgentTSPEnv_8751c_00000_0_2024-03-07_11-07-39/checkpoint_000000")
     
